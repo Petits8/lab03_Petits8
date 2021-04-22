@@ -1,6 +1,6 @@
 // intlist.cpp
 // Implements class IntList
-// YOUR NAME(S), AND DATE
+// Jesus Velarde Arvayo; April 22, 2021
 
 #include "intlist.h"
 
@@ -9,45 +9,136 @@ using std::cout;
 
 // copy constructor
 IntList::IntList(const IntList& source) {
-    //IMPLEMENT THIS
+    Node* sourceNode = source.first;
+
+    Node* node;
+    if(sourceNode){
+        node = new Node;
+    }
+
+    while(sourceNode){
+        node->info = sourceNode->info;
+        node->next = nullptr;
+
+        if(source.first == sourceNode){
+            first = node;
+        }
+        if(sourceNode->next){
+            node->next = new Node;
+        }
+        sourceNode = sourceNode->next;
+        node = node->next;
+    }
 }
 
 // destructor deletes all nodes
 IntList::~IntList() {
-    //IMPLEMENT THIS
+    Node* node;
+    while(first){
+        node = first->next;
+        delete first;
+        first = node;
+    }
 }
 
 
 // return sum of values in list
 int IntList::sum() const {
-    return 0; // REPLACE THIS NON-SOLUTION
+    int sum(0);
+    Node *node = first;
+    while(node){
+        sum += node->info;
+        node = node->next;
+    }
+    return sum; // REPLACE THIS NON-SOLUTION
 }
 
 // returns true if value is in the list; false if not
 bool IntList::contains(int value) const {
+    Node* node = first;
+    while(node){
+        if(node->info == value)
+            return true;
+        node = node->next;
+    }
     return false; // REPLACE THIS NON-SOLUTION
 }
 
 // returns maximum value in list, or 0 if empty list
 int IntList::max() const {
-    return 0; // REPLACE THIS NON-SOLUTION
+    int max;
+    if(!first)
+        return 0;
+    Node *node = first;
+    max = first->info;
+    while(node){
+        if(node->info > max)
+            max = node->info;
+        node = node->next;
+    }
+    return max; // REPLACE THIS NON-SOLUTION
 }
 
 // returns average (arithmetic mean) of all values, or
 // 0 if list is empty
 double IntList::average() const {
-    return 0.0; // REPLACE THIS NON-SOLUTION
+
+    double sum(0);
+    int n(0);
+
+    Node *node = first;
+    while(node){
+        n++;
+        sum += node->info;
+        node = node->next;
+    }
+    if(n == 0)
+        return 0.0;
+
+    return sum/static_cast<double>(n); 
 }
 
 // inserts value as new node at beginning of list
 void IntList::insertFirst(int value) {
-    // IMPLEMENT
+    if(first == 0){
+        first = new Node;
+        first->info = value;
+        first->next = 0;
+    }else{
+        Node* node = new Node;
+        node->info = value;
+        node->next = first;
+        first = node;
+    }
 }
 
 //Assignment operator should copy the list from the source
 //to this list, deleting/replacing any existing nodes
 IntList& IntList::operator=(const IntList& source){
     //IMPLEMENT
+    this->~IntList();
+
+    Node* sourceNode = source.first;
+
+    Node* node;
+    if(sourceNode){
+        node = new Node;
+    }
+
+    while(sourceNode){
+        node->info = sourceNode->info;
+        node->next = nullptr;
+
+        if(source.first == sourceNode){
+            first = node;
+        }
+        if(sourceNode->next){
+            node->next = new Node;
+        }
+        sourceNode = sourceNode->next;
+        node = node->next;
+    }
+
     return *this;
 }
 
